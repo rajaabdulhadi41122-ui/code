@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HTMLCODE VIEWER</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin: 0;
+            background: linear-gradient(45deg, #ff9a8b, #ff6b6b, #4ecdc4, #74b9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            color: white;
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 14px;
+            padding: 15px;
+            border: 2px solid #ff6b6b;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        textarea:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #ff9ff3, #74b9ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #ff9ff3, #667eea);
+            transform: translateY(-2px);
+        }
+        .right-panel {
+            flex: 1;
+            border: 2px solid #74b9ff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(116, 185, 255, 0.3);
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .file-name-box {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI HTMLCODE VIEWER</h1>
+        <p class="subtitle">Made by Abdul Hadi (Pk)</p>
+    </header>
+
+    <div class="container">
+        <div class="left-panel">
+            <textarea id="codeInput" placeholder="Enter your HTML code here..."><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+</head>
+<body>
+    <h1>AI Suggested!</h1>
+    <p>This is a sample HTML snippet.</p>
+</body>
+</html></textarea>
+  <!-- File Name Box Added -->
+            <div class="file-name-box">
+                <label for="fileName" style="font-weight:bold; color:#ff6b6b;">File Name:</label>
+                <input type="text" id="fileName" placeholder="Enter file name..."
+                    style="padding:10px; border:2px solid #74b9ff; border-radius:6px; width:100%; margin-top:5px;">
+            </div>
+            <div class="button-group">
+                <button onclick="renderCode()">Render Code</button>
+                <button onclick="downloadCode()">Download HTML</button>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <iframe id="outputFrame" srcdoc="<!-- Output will appear here -->"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function renderCode() {
+            const code = document.getElementById('codeInput').value;
+            document.getElementById('outputFrame').srcdoc = code;
+        }
+
+        function downloadCode() {
+            const code = document.getElementById('codeInput').value;
+            let fileName = document.getElementById('fileName').value.trim();
+
+            if (fileName === "") {
+                fileName = "code"; // default
+            }
+
+            if (!fileName.endsWith(".html")) {
+                fileName += ".html"; // auto add html
+            }
+
+            const blob = new Blob([code], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = fileName;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(url);
+        }
+
+        renderCode(); // initial preview
+    </script>
+</body>
+</html>
